@@ -1,2 +1,3 @@
 // 双向链表
-export default FK_DoubleLinkedList;
+import LinkedList from "./LinkedList.js";
+export default LinkedList;
