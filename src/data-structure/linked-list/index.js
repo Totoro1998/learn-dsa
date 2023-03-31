@@ -1,2 +1,3 @@
 // 链表
-export default FK_LinkedList;
+import LinkedList from "./LinkedList";
+export default LinkedList;

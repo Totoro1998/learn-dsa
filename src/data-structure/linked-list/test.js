@@ -1,13 +1,16 @@
 import LinkedList from "./LinkedList.js";
+import CircularLinkedList from "./CircularLinkedList.js";
 
-const list = new LinkedList();
+const list = new CircularLinkedList();
+list.prepend(0);
 list.append(1);
 list.append(2);
 list.append(3);
-list.prepend(0);
 list.insert(2, 2.5);
-console.log(list.toArray()); // [0, 1, 2, 2.5, 3]
-list.remove(2.5);
+console.log(list.toArray()); // [0, 1, 2, 2.5,2, 3]
+list.append(2.5);
+list.append(2.5);
+list.removeAll(2.5);
 console.log(list.toArray()); // [0, 1, 2, 3]
 list.removeAt(2);
 console.log(list.toArray()); // [0, 1, 3]
