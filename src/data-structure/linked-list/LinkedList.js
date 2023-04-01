@@ -5,7 +5,7 @@ export default class LinkedList {
   constructor() {
     this[headSymbol] = new Node(null); // 哨兵节点
     this.tail = this[headSymbol]; // 尾指针
-    this._size = 0; // 链表长度
+    this.length = 0; // 链表长度
     this.hash = new Map(); // 哈希表
   }
   /**
@@ -13,14 +13,14 @@ export default class LinkedList {
    * @returns
    */
   size() {
-    return this._size;
+    return this.length;
   }
   /**
    * 判断链表是否为空
    * @returns
    */
   isEmpty() {
-    return this._size === 0;
+    return this.length === 0;
   }
   /**
    * 获取首节点
@@ -36,7 +36,7 @@ export default class LinkedList {
     const node = new Node(value);
     node.next = this[headSymbol].next;
     this[headSymbol].next = node;
-    this._size++;
+    this.length++;
     this.hash.set(value, node); // 添加节点到哈希表
   }
 
@@ -52,7 +52,7 @@ export default class LinkedList {
     const node = new Node(value);
     this.tail.next = node;
     this.tail = node;
-    this._size++;
+    this.length++;
     this.hash.set(value, node); // 添加节点到哈希表
     return true;
   }
@@ -62,14 +62,14 @@ export default class LinkedList {
    * @param {*} position
    */
   insert(position, value) {
-    if (position < 0 || position > this._size) {
+    if (position < 0 || position > this.length) {
       return false;
     }
     if (this.hash.has(value)) {
       // 如果节点值已经存在，则不添加
       return false;
     }
-    if (position === this._size) {
+    if (position === this.length) {
       this.append(value);
       return true;
     }
@@ -84,7 +84,7 @@ export default class LinkedList {
     }
     node.next = prev.next;
     prev.next = node;
-    this._size++;
+    this.length++;
     this.hash.set(value, node); // 添加节点到哈希表
     return true;
   }
@@ -109,7 +109,7 @@ export default class LinkedList {
    * @param {*} position
    */
   get(position) {
-    if (position < 0 || position >= this._size) {
+    if (position < 0 || position >= this.length) {
       return null;
     }
     let curr = this[headSymbol].next;
@@ -124,7 +124,7 @@ export default class LinkedList {
    * @param {*} value
    */
   set(position, value) {
-    if (position < 0 || position >= this._size) {
+    if (position < 0 || position >= this.length) {
       return false;
     }
     if (this.hash.has(value)) {
@@ -154,7 +154,7 @@ export default class LinkedList {
    * @param {*} position
    */
   removeAt(position) {
-    if (position < 0 || position >= this._size) {
+    if (position < 0 || position >= this.length) {
       return false;
     }
     let prev = this[headSymbol];
@@ -168,20 +168,38 @@ export default class LinkedList {
       // 如果删除的是尾部节点，需要更新 tail 指针
       this.tail = prev;
     }
-    this._size--;
+    this.length--;
     this.hash.delete(curr.value); // 从哈希表中删除节点
-    return true;
+    return curr.value;
   }
   /**
-   * 遍历
-   * @param {*} visit
+   * 删除尾节点
+   * @returns
    */
-  traverse(visit) {
-    let curr = this.first();
-    while (curr) {
-      visit(curr.value);
-      curr = currentNode.next;
+  removeTail() {
+    if (this.isEmpty()) {
+      return null;
     }
+    return this.removeAt(thi.length);
+  }
+  /**
+   * 删除头节点
+   * @returns
+   */
+  removeHead() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    return this.removeAt(0);
+  }
+  /**
+   * 使用数组生成链表
+   * @param {*} values
+   * @returns
+   */
+  fromArray(values) {
+    values.forEach((value) => this.append(value));
+    return this;
   }
   /**
    * 将链表转化为数组
@@ -197,12 +215,51 @@ export default class LinkedList {
     return arr;
   }
   /**
+   * 转为字符串
+   * @param {*} callback
+   * @returns
+   */
+  toString(callback) {
+    return this.toArray()
+      .map((node) => node.toString(callback))
+      .toString();
+  }
+  /**
+   * 翻转链表
+   */
+  reverse() {
+    let prevNode = null; // 前一个节点的指针，初始值为null
+    let currNode = this[headSymbol].next; // 当前节点的指针，初始值为第一个节点
+    let nextNode;
+
+    // 遍历整个链表
+    while (currNode !== null) {
+      nextNode = currNode.next; // 保存下一个节点的指针
+      currNode.next = prevNode; // 将当前节点的next指针指向前一个节点
+      prevNode = currNode; // 更新前一个节点的指针
+      currNode = nextNode; // 更新当前节点的指针
+    }
+    this[headSymbol].next = prevNode; // 将哨兵节点的next指针指向新的第一个节点
+    this.tail = this[headSymbol].next; // 更新尾指针指向最后一个节点
+  }
+  /**
+   * 遍历
+   * @param {*} visit
+   */
+  traverse(visit) {
+    let curr = this.first();
+    while (curr) {
+      visit(curr.value);
+      curr = currentNode.next;
+    }
+  }
+  /**
    * 清空链表
    */
   clear() {
     this[headSymbol].next = null;
     this.tail = this[headSymbol];
-    this._size = 0;
+    this.length = 0;
     this.hash.clear(); // 清空哈希表
   }
 }

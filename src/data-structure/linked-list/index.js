@@ -1,3 +1,3 @@
 // 链表
-import LinkedList from "./LinkedList";
+import LinkedList from "./LinkedList.js";
 export default LinkedList;

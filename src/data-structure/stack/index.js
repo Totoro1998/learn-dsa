@@ -1,2 +1,3 @@
-// 栈
-export default FK_Stack;
+import Stack from "./stack.js";
+
+export default Stack;

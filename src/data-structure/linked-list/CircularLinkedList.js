@@ -147,44 +147,6 @@ class CircularLinkedList {
     return false;
   }
   /**
-   * 删除链表中所有node.value=value的节点,并返回所有删除的节点
-   * @param {*} value
-   */
-  removeAll(value) {
-    // 如果链表为空，返回空数组
-    if (this.isEmpty()) {
-      return [];
-    }
-    let removedNodes = [];
-    while (this.head && this.head.value === value) {
-      removedNodes.push(this.head);
-      // 如果链表只有一个节点，设置头和尾为null
-      if (this.length === 1) {
-        this.head = null;
-        this.tail = null;
-      } else {
-        // 如果链表有多个节点，将头节点设置为下一个节点并将尾节点连接到新的头节点
-        this.head = this.head.next;
-        this.tail.next = this.head;
-      }
-      this.length--;
-    }
-    // 如果头节点不为空，则遍历链表查找要删除的节点
-    if (this.head) {
-      let currentNode = this.head;
-      while (currentNode.next !== this.head) {
-        if (currentNode.next.value === value) {
-          removedNodes.push(currentNode.next);
-          currentNode.next = currentNode.next.next;
-          this.length--;
-        } else {
-          currentNode = currentNode.next;
-        }
-      }
-    }
-    return removedNodes;
-  }
-  /**
    * 删除链表中第一个node.value = value的节点
    * @param {*} value
    * @returns
@@ -262,49 +224,61 @@ class CircularLinkedList {
    * 删除链表的尾部节点
    * @returns
    */
-  deleteTail() {
+  removeTail() {
     // 如果链表为空
     if (this.isEmpty()) {
       return null;
     }
-    // 缓存当前的尾部节点
-    const deletedTail = this.tail;
-    if (this.length === 1) {
-      this.head = null;
-      this.tail = null;
-    } else {
-      let currentNode = this.head;
-      while (currentNode.next !== this.tail) {
-        // 找到倒数第二个节点
-        currentNode = currentNode.next;
-      }
-      currentNode.next = this.head; // 将倒数第二个节点的 next 指向头节点
-      this.tail = currentNode; // 将倒数第二个节点设置为新的尾节点
-    }
-    this.length--;
-    return deletedTail;
+    return this.removeAt(this.size);
   }
   /**
    * 删除链表的头部节点
    * @returns
    */
-  deleteHead() {
+  removeHead() {
     // 如果链表为空，则返回 null
     if (this.isEmpty()) {
       return null;
     }
-    // 缓存要被删除的头节点
-    const deletedHead = this.head;
-    this.head = this.head.next;
-    // 如果链表只有一个节点
-    if (this.length === 1) {
-      this.tail = null; // 将尾节点设置为 null
-    } else {
-      this.tail.next = this.head; // 否则将尾节点的 next 指向头节点
+    return this.removeAt(0);
+  }
+  /**
+   * 删除链表中所有node.value=value的节点,并返回所有删除的节点
+   * @param {*} value
+   */
+  removeAll(value) {
+    // 如果链表为空，返回空数组
+    if (this.isEmpty()) {
+      return [];
     }
-    // 返回被删除的头节点
-    this.length--;
-    return deletedHead;
+    let removedNodes = [];
+    while (this.head && this.head.value === value) {
+      removedNodes.push(this.head);
+      // 如果链表只有一个节点，设置头和尾为null
+      if (this.length === 1) {
+        this.head = null;
+        this.tail = null;
+      } else {
+        // 如果链表有多个节点，将头节点设置为下一个节点并将尾节点连接到新的头节点
+        this.head = this.head.next;
+        this.tail.next = this.head;
+      }
+      this.length--;
+    }
+    // 如果头节点不为空，则遍历链表查找要删除的节点
+    if (this.head) {
+      let currentNode = this.head;
+      while (currentNode.next !== this.head) {
+        if (currentNode.next.value === value) {
+          removedNodes.push(currentNode.next);
+          currentNode.next = currentNode.next.next;
+          this.length--;
+        } else {
+          currentNode = currentNode.next;
+        }
+      }
+    }
+    return removedNodes;
   }
   /**
    * 使用数组生成链表
