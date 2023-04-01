@@ -1,7 +1,7 @@
 import ListNode from "./ListNode.js";
 
 export default class LinkedList {
-  _size; //规模
+  length; //规模
   _header; //头哨兵
   _trailer; //尾哨兵
 
@@ -15,13 +15,13 @@ export default class LinkedList {
     this._header = new ListNode();
     this._trailer = new ListNode();
 
-    this._header.succ = this._trailer;
+    this._header.next = this._trailer;
     this._header.pred = null;
 
     this._trailer.pred = this._header;
-    this._trailer.succ = null;
+    this._trailer.next = null;
 
-    this._size = 0;
+    this.length = 0;
   }
   /**
    * 复制列表中自p起的n项
@@ -31,29 +31,29 @@ export default class LinkedList {
   copyNodes(p, n) {
     this.init();
     while (n--) {
-      this.insertAsLast(p.data);
-      p = p.succ;
+      this.append(p.data);
+      p = p.next;
     }
   }
   /**
    * 规模
    */
-  len() {
-    return this._size;
+  size() {
+    return this.length;
   }
   /**
    * 判空
    * @returns
    */
-  empty() {
-    return this._size <= 0;
+  isEmpty() {
+    return this.length <= 0;
   }
   /**
    * 获取首节点
    * @returns
    */
   first() {
-    return this._header.succ;
+    return this._header.next;
   }
   /**
    * 获取末节点
@@ -66,7 +66,25 @@ export default class LinkedList {
    * @param {*} p
    */
   valid(p) {
-    return Boolean(p && p.pred && p.succ);
+    return Boolean(p && p.pred && p.next);
+  }
+  /**
+   * 插入首节点
+   * @param {*} e
+   * @returns
+   */
+  prepend(e) {
+    this.length++;
+    return this._header.insertAsNext(e);
+  }
+  /**
+   * 插入末节点
+   * @param {*} e
+   * @returns
+   */
+  append(e) {
+    this.length++;
+    return this._trailer.insertAsPred(e);
   }
   /**
    *
@@ -81,7 +99,7 @@ export default class LinkedList {
    * @param {*} n
    * @param {*} p
    */
-  findByRange(e, n = this._size, p = this._trailer) {
+  findByRange(e, n = this.length, p = this._trailer) {
     while (0 < n--) {
       p = p.pred;
       if (e === p.data) {
@@ -91,31 +109,13 @@ export default class LinkedList {
     return null;
   }
   /**
-   * 插入首节点
-   * @param {*} e
-   * @returns
-   */
-  insertAsFirst(e) {
-    this._size++;
-    return this._header.insertAsSucc(e);
-  }
-  /**
-   * 插入末节点
-   * @param {*} e
-   * @returns
-   */
-  insertAsLast(e) {
-    this._size++;
-    return this._trailer.insertAsPred(e);
-  }
-  /**
    * e当作p的后继插入（ After）
    * @param {*} p
    * @param {*} e
    */
   insertA(p, e) {
-    this._size++;
-    return p.insertAsSucc(e);
+    this.length++;
+    return p.insertAsNext(e);
   }
   /**
    * e当作p的前驱插入（ Before）
@@ -123,7 +123,7 @@ export default class LinkedList {
    * @param {*} e
    */
   insertB(p, e) {
-    this._size++;
+    this.length++;
     return p.insertAsPred(e);
   }
   /**
@@ -132,22 +132,58 @@ export default class LinkedList {
    */
   remove(p) {
     const e = p.data;
-    p.pred.succ = p.succ;
-    p.succ.pred = p.pred;
+    p.pred.next = p.next;
+    p.next.pred = p.pred;
     p - null;
-    this._size--;
+    this.length--;
     return e;
+  }
+  /**
+   * 删除指定节点的值
+   * @param {*} index
+   */
+  removeAt(index) {
+    if (index < 0 || index >= this.length) {
+      return null; // 如果索引越界，返回 null
+    }
+    let node = this._header.next;
+    for (let i = 0; i < index; i++) {
+      node = node.next; // 移动到要删除的节点
+    }
+    const removedNode = node; // 要删除的节点
+    node.pred.next = node.next;
+    node.next.pred = node.pred;
+
+    this.length--; // 长度减 1
+    return removedNode.data; // 返回被删除的节点的数据值
+  }
+  /**
+   * 删除头节点
+   * @returns
+   */
+  removeHead() {
+    return this.removeAt(0);
+  }
+  /**
+   * 删除尾节点
+   * @returns
+   */
+  removeTail() {
+    if (this.isEmpty()) {
+      return null;
+    }
+    return this.removeAt(this.length - 1);
   }
   /**
    *无序去重
    */
   deduplicate() {
-    if (this._size < 2) {
+    if (this.length < 2) {
       return;
     }
-    const oldSize = this._size;
+    const oldSize = this.length;
     let p = this.first();
-    for (let r = 0; p.succ; p = p.succ) {
+    for (let r = 0; p.next; p = p.next) {
       let q = this.findByRange(p.data, r, p); //在p的r个（真）前驱中查找雷同者
       if (q) {
         this.remove(q);
@@ -155,14 +191,14 @@ export default class LinkedList {
         r++; //否则r+1，为下一个p的前驱查找数量加1
       }
     }
-    return oldSize - this._size;
+    return oldSize - this.length;
   }
   /**
    *遍历
    * @param {*} visit
    */
   traverse(visit) {
-    for (let p = this._header.succ; p.succ; p = p.succ) {
+    for (let p = this._header.next; p.next; p = p.next) {
       visit(p.data);
     }
   }
@@ -170,10 +206,10 @@ export default class LinkedList {
    * 清除所有节点
    */
   clear() {
-    const oldSize = this._size;
-    while (0 < this._size) {
+    const oldSize = this.length;
+    while (0 < this.length) {
       // 反复删除首节点，直至列表变空
-      this.remove(this._header.succ);
+      this.remove(this._header.next);
     }
     return oldSize;
   }

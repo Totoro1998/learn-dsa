@@ -20,7 +20,7 @@ export default class FK_Vector {
   size() {
     return this._size;
   }
-  empty() {
+  isEmpty() {
     return this._size === 0;
   }
   // 扩容

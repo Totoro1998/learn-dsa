@@ -1,13 +1,13 @@
 import LinkedList from "./index.js";
 
 const LinkedListTest = new LinkedList();
-LinkedListTest.insertAsFirst("f");
-LinkedListTest.insertAsLast("k");
-LinkedListTest.insertAsLast("k");
+LinkedListTest.prepend("f");
+LinkedListTest.append("k");
+LinkedListTest.append("k");
 let k_node = LinkedListTest.find("k");
 
-// console.log(LinkedListTest.len());
-// console.log(LinkedListTest.empty());
+// console.log(LinkedListTest.size());
+// console.log(LinkedListTest.isEmpty());
 // console.log(LinkedListTest.first());
 // console.log(LinkedListTest.last());
 // console.log(LinkedListTest.valid(k_node));

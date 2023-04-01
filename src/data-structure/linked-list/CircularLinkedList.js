@@ -229,7 +229,7 @@ class CircularLinkedList {
     if (this.isEmpty()) {
       return null;
     }
-    return this.removeAt(this.size);
+    return this.removeAt(this.size - 1);
   }
   /**
    * 删除链表的头部节点

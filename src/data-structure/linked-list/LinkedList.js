@@ -180,7 +180,7 @@ export default class LinkedList {
     if (this.isEmpty()) {
       return null;
     }
-    return this.removeAt(thi.length);
+    return this.removeAt(thi.length - 1);
   }
   /**
    * 删除头节点
