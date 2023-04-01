@@ -1,2 +1,3 @@
 // 队列
-export default FK_Queue;
+import Queue from "./Queue.js";
+export default Queue;
