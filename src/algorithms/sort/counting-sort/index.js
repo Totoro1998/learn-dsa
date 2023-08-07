@@ -15,8 +15,8 @@ export default class CountingSort extends BaseSort {
    */
   sort(originArray, smallestElement = undefined, biggestElement = undefined) {
     // 如果没有提供最小值和最大值，则找出数组中的最小值和最大值。
-    let detectedSmallestElement = smallestElement || 0;
-    let detectedBiggestElement = biggestElement || 0;
+    let detectedSmallestElement = smallestElement || originArray[0];
+    let detectedBiggestElement = biggestElement || originArray[0];
     if (smallestElement === undefined || biggestElement === undefined) {
       originArray.forEach((element) => {
         if (this.comparator.greaterThan(element, detectedBiggestElement)) {
@@ -28,41 +28,44 @@ export default class CountingSort extends BaseSort {
       });
     }
 
-    // 初始化计数桶
-    const buckets = Array(
+    // 初始化计数桶，此数组将保存原始数组中每个数字出现的次数
+    const countArray = Array(
       detectedBiggestElement - detectedSmallestElement + 1
     ).fill(0);
-
     // 统计每个元素出现的次数。
     originArray.forEach((element) => {
       // 使用元素值减去最小值作为桶的索引，增加对应桶的计数器。
-      buckets[element - detectedSmallestElement] += 1;
+      countArray[element - detectedSmallestElement] += 1;
     });
+    console.log(countArray);
 
     // 计算每个元素在排序后的数组中的位置
-    for (let bucketIndex = 1; bucketIndex < buckets.length; bucketIndex++) {
-      // 计算每个桶的计数器之和，得到该桶及之前桶中元素的总数
-      buckets[bucketIndex] += buckets[bucketIndex - 1];
+    for (let bucketIndex = 1; bucketIndex < countArray.length; bucketIndex++) {
+      // 将当前桶中的次数与前一个桶中的次数相加，以便确定当前元素在排序后的数组中正确的位置。
+      countArray[bucketIndex] += countArray[bucketIndex - 1];
     }
-    // 去掉最后一个桶的计数器，因为最后一个桶的元素已经全部排好序了
-    buckets.pop();
-    // 在第一个桶之前插入一个 0，因为第一个桶的元素起始位置为 0
-    buckets.unshift(0);
+
+    console.log(countArray);
 
     // 构建排序后的数组
-    const sortedArray = Array(originArray.length).fill(null);
-    for (
-      let elementIndex = 0;
-      elementIndex < originArray.length;
-      elementIndex++
-    ) {
-      const element = originArray[elementIndex];
+    const sortedArray = Array(originArray.length);
+
+    for (let i = originArray.length - 1; i >= 0; i--) {
+      const element = originArray[i];
+
       // 计算元素在排序后的数组中的位置，即对应桶的计数器值。
-      const elementSortedPosition = buckets[element - detectedSmallestElement];
+
+      /**
+       * countArray[i]表示原始数组中值为 i + minElement 的元素的次数
+       * 我们可以通过查找 countArray 中元素 element 的次数，从而确定在排序后数组中有多少元素比 element 小（包括 element 本身）。
+       */
+      const elementSortedPosition =
+        countArray[element - detectedSmallestElement] - 1;
 
       // 将元素放入排序后的数组中，更新对应桶的计数器。
       sortedArray[elementSortedPosition] = element;
-      buckets[element - detectedSmallestElement] += 1;
+      // 用于在计数数组 countArray 中将与 element 相等的元素的次数减去1
+      countArray[element - detectedSmallestElement]--;
     }
     return sortedArray;
   }

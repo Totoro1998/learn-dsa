@@ -1,3 +1,4 @@
+import { swap } from "../../../utils/array.js";
 import BaseSort from "../base-sort.js";
 
 /**
@@ -18,10 +19,7 @@ export default class InsertionSort extends BaseSort {
         array[currentIndex - 1] !== undefined &&
         this.comparator.lessThan(array[currentIndex], array[currentIndex - 1])
       ) {
-        [array[currentIndex - 1], array[currentIndex]] = [
-          array[currentIndex],
-          array[currentIndex - 1],
-        ];
+        swap(array, currentIndex - 1, currentIndex);
         currentIndex--; // 更新当前待排序元素的位置
       }
     }

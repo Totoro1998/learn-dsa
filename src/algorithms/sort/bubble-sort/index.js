@@ -1,4 +1,5 @@
 import BaseSort from "../base-sort.js";
+import { swap } from "../../../utils/array.js";
 
 /**
  * 冒泡排序
@@ -12,7 +13,7 @@ export default class BubbleSort extends BaseSort {
       swapped = false;
       for (let j = 0; j < len - i - 1; j++) {
         if (this.comparator.greaterThan(array[j], array[j + 1])) {
-          [array[j], array[j + 1]] = [array[j + 1], array[j]];
+          swap(array, j, j + 1);
           swapped = true;
         }
       }

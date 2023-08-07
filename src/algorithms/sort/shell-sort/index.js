@@ -26,10 +26,7 @@ export default class ShellSort extends BaseSort {
               array[currentIndex]
             )
           ) {
-            [array[gapShiftedIndex], array[currentIndex]] = [
-              array[currentIndex],
-              array[gapShiftedIndex],
-            ];
+            swap(array, gapShiftedIndex, currentIndex);
           }
           // 更新索引
           gapShiftedIndex = currentIndex;
