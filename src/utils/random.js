@@ -5,8 +5,9 @@
  */
 export function getRandomNumberArray(size) {
   const array = [];
+  const ratio = getRandomNumber(10, 1);
   for (let i = 0; i < size; i++) {
-    array.push(getRandomNumber(size * 10));
+    array.push(getRandomNumber(size * ratio));
   }
   return array;
 }
