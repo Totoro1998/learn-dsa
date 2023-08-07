@@ -12,13 +12,16 @@ export default class QuickSort extends BaseSort {
     if (array.length <= 1) {
       return array;
     }
-    // Init left and right arrays.
+
+    // 初始化三个数组，用于存储小于、等于和大于基准元素的元素
     const leftArray = [];
     const rightArray = [];
-
+    // 从数组中提取基准元素
     const pivotElement = array.shift();
     const centerArray = [pivotElement];
+
     while (array.length) {
+      // 获取下一个元素
       const currentElement = array.shift();
 
       if (this.comparator.equal(currentElement, pivotElement)) {
@@ -29,8 +32,12 @@ export default class QuickSort extends BaseSort {
         rightArray.push(currentElement);
       }
     }
+
+    // 递归地对左侧和右侧数组进行排序，使用相同的sort函数
     const leftArraySorted = this.sort(leftArray);
     const rightArraySorted = this.sort(rightArray);
+
+    // 拼接排序后的leftArray、centerArray和rightArray
     return leftArraySorted.concat(centerArray, rightArraySorted);
   }
 }

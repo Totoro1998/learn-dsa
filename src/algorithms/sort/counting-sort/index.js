@@ -27,6 +27,7 @@ export default class CountingSort extends BaseSort {
         }
       });
     }
+
     // 初始化计数桶
     const buckets = Array(
       detectedBiggestElement - detectedSmallestElement + 1
@@ -53,7 +54,7 @@ export default class CountingSort extends BaseSort {
     for (
       let elementIndex = 0;
       elementIndex < originArray.length;
-      elementIndex += 1
+      elementIndex++
     ) {
       const element = originArray[elementIndex];
       // 计算元素在排序后的数组中的位置，即对应桶的计数器值。

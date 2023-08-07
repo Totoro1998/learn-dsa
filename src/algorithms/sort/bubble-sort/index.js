@@ -8,10 +8,10 @@ export default class BubbleSort extends BaseSort {
     const array = [...originArray];
     let swapped = false;
     const len = array.length;
-    for (let i = 1; i < len; i++) {
+    for (let i = 0; i < len - 1; i++) {
       swapped = false;
-      for (let j = 0; j < len - i; j++) {
-        if (this.comparator.lessThan(array[j + 1], array[j])) {
+      for (let j = 0; j < len - i - 1; j++) {
+        if (this.comparator.greaterThan(array[j], array[j + 1])) {
           [array[j], array[j + 1]] = [array[j + 1], array[j]];
           swapped = true;
         }
