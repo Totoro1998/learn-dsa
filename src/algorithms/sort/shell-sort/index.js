@@ -1,4 +1,5 @@
 import BaseSort from "../base-sort.js";
+import { swap } from "../../../utils/array.js";
 
 /**
  * 希尔排序
@@ -14,23 +15,20 @@ export default class ShellSort extends BaseSort {
     let gap = Math.floor(len / 2); // 初始化步长为数组长度的一半
 
     // 逐步缩小步长直到为1
-    while (gap > 0) {
-      for (let i = 0; i < len - gap; i++) {
+    while (gap >= 1) {
+      for (let i = gap; i < len; i++) {
         // 对每个子序列进行插入排序
         let currentIndex = i; // 记录当前元素的索引
-        let gapShiftedIndex = i + gap; // 记录间隔后的元素索引
-        while (currentIndex > -1) {
-          // 在子序列中进行插入排序
-          if (
-            this.comparator.lessThan(
-              array[gapShiftedIndex],
-              array[currentIndex]
-            )
-          ) {
-            swap(array, gapShiftedIndex, currentIndex);
-          }
-          // 更新索引
-          gapShiftedIndex = currentIndex;
+        // 如果排序的后面的数字小于前面的，交换两个数的位置
+        while (
+          this.comparator.lessThan(
+            array[currentIndex],
+            array[currentIndex - gap]
+          ) &&
+          currentIndex - gap >= 0
+        ) {
+          swap(array, currentIndex - gap, currentIndex);
+          // currentIndex减小gap从后向前遍历
           currentIndex -= gap;
         }
       }

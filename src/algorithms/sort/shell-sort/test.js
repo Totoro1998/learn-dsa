@@ -5,5 +5,5 @@ const array = getRandomNumberArray(10);
 // console.log("start------" + new Date());
 const shellSort = new ShellSort();
 const newArray = shellSort.sort(array);
-// console.log(newArray);
+console.log(newArray);
 // console.log("end------" + new Date());
