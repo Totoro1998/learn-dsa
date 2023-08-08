@@ -1,3 +1,4 @@
+import { swap } from "../../../utils/array.js";
 import BaseSort from "../base-sort.js";
 
 /**
@@ -21,7 +22,7 @@ export default class SelectionSort extends BaseSort {
       }
       if (minIndex !== i) {
         // 如果最小值不在已排序序列的末尾位置，则交换最小值和已排序序列的末尾位置的元素
-        [array[i], array[minIndex]] = [array[minIndex], array[i]];
+        swap(array, i, minIndex);
       }
     }
 

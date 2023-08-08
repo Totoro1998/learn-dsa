@@ -12,13 +12,14 @@ export default class ShellSort extends BaseSort {
     const array = [...originArray];
     const len = array.length;
     let gap = Math.floor(len / 2); // 初始化步长为数组长度的一半
+
+    // 逐步缩小步长直到为1
     while (gap > 0) {
-      // 逐步缩小步长直到为1
       for (let i = 0; i < len - gap; i++) {
         // 对每个子序列进行插入排序
         let currentIndex = i; // 记录当前元素的索引
         let gapShiftedIndex = i + gap; // 记录间隔后的元素索引
-        while (currentIndex >= 0) {
+        while (currentIndex > -1) {
           // 在子序列中进行插入排序
           if (
             this.comparator.lessThan(

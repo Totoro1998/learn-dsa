@@ -14,9 +14,10 @@ export default class InsertionSort extends BaseSort {
     for (let i = 1; i < len; i++) {
       let currentIndex = i; // 当前待排序元素的位置
 
-      //如果当前待排序元素比前一个已排序元素小，并且还没有到达数组的开头，则将这个元素向前移动一位，直到找到它正确的位置为止。
+      // 如果当前待排序元素比前一个已排序元素小，并且还没有到达数组的开头，
+      // 则将这个元素向前移动一位，直到找到它正确的位置为止。
       while (
-        array[currentIndex - 1] !== undefined &&
+        currentIndex > 0 &&
         this.comparator.lessThan(array[currentIndex], array[currentIndex - 1])
       ) {
         swap(array, currentIndex - 1, currentIndex);
