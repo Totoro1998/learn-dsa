@@ -228,16 +228,16 @@ export default class LinkedList {
    * 翻转链表
    */
   reverse() {
-    let prevNode = null; // 前一个节点的指针，初始值为null
-    let currNode = this[headSymbol].next; // 当前节点的指针，初始值为第一个节点
-    let nextNode;
+    let currNode = this[headSymbol].next; // 当前节点，初始值为第一个节点
+    let prevNode = null; // 前一个节点，初始值为null
+    let nextNode; // 当前节点的下一个节点
 
     // 遍历整个链表
     while (currNode !== null) {
       nextNode = currNode.next; // 保存下一个节点的指针
       currNode.next = prevNode; // 将当前节点的next指针指向前一个节点
-      prevNode = currNode; // 更新前一个节点的指针
-      currNode = nextNode; // 更新当前节点的指针
+      prevNode = currNode; // 更新前一个节点
+      currNode = nextNode; // 更新当前节点
     }
     this[headSymbol].next = prevNode; // 将哨兵节点的next指针指向新的第一个节点
     this.tail = this[headSymbol].next; // 更新尾指针指向最后一个节点
