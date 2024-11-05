@@ -101,7 +101,7 @@ class MyArrayList {
    * 返回当前元素数量
    * @returns
    */
-  size() {
+  len() {
     return this.size;
   }
   /**
@@ -175,3 +175,26 @@ class MyArrayList {
     console.log(this.data);
   }
 }
+
+export default MyArrayList;
+
+function Test() {
+  // 初始容量设置为 3
+  const arr = new MyArrayList(3);
+
+  // 添加 5 个元素 1,2,3,4,5
+  for (let i = 1; i <= 5; i++) {
+    arr.addLast(i);
+  }
+
+  arr.remove(3); // 1,2,3,5
+  arr.add(1, 9); // 1,9,2,3,5
+  arr.addFirst(100); // 100,1,9,2,3,5
+  const val = arr.removeLast(); // 100,1,9,3,4
+
+  // 100 1 9 2 3
+  for (let i = 0; i < arr.len(); i++) {
+    console.log(arr.get(i));
+  }
+}
+Test();
