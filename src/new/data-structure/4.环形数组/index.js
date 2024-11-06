@@ -47,6 +47,7 @@ class CycleArray {
    */
   growArray() {
     if (this.isFull()) {
+      console.log("start", this.start);
       this.resize(this.capacity * 2);
     }
   }
@@ -64,7 +65,7 @@ class CycleArray {
    */
   addFirst(val) {
     this.growArray();
-    this.start = (this.start - 1 + this.capacity) % this.capacity; // 为了解决this.start -1小于0，假如capacity为5，-1计算后的start为4了
+    this.start = (this.start - 1 + this.capacity) % this.capacity; // !新增往左移，删除往右移
     this.arr[this.start] = val;
     this.count++;
   }
@@ -84,8 +85,8 @@ class CycleArray {
   removeFirst() {
     this.checkIsEpmty();
     // 因为 start 是闭区间，所以先赋值，再右移
-    this.arr[this.start] = null;
-    this.start = (this.start + 1) % this.capacity;
+    this.arr[this.start] = undefined;
+    this.start = (this.start + 1) % this.capacity; // !新增往左移，删除往右移
     this.count--;
     this.shrinkArray();
   }
@@ -96,7 +97,7 @@ class CycleArray {
     this.checkIsEpmty();
     // 因为 end 是开区间，所以先左移，再赋值
     this.end = (this.end - 1 + this.capacity) % this.capacity;
-    this.arr[this.end] = null;
+    this.arr[this.end] = undefined;
     this.count--;
     this.shrinkArray();
   }
@@ -124,10 +125,9 @@ function Test() {
   test.addFirst(2);
   test.addFirst(3);
   test.addFirst(4);
-  test.addFirst(5);
-  console.log(test.arr);
-  console.log("end", test.end);
-  console.log("start", test.start);
+  test.addFirst(5); // [ 5, 4, 3, 2, 1 ]，start 0
+  test.addFirst(6); // [ 5, 4, 3, 2, 1, <4 empty items>, 6 ] start 9
+  test.removeFirst(); // [ 5, 4, 3, 2, 1, <4 empty items>, undefined ] start 0
 }
 
 Test();
