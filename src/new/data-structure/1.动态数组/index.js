@@ -1,4 +1,4 @@
-class MyArrayList {
+class ArrayList {
   constructor(initCapacity = 1) {
     this.data = new Array(initCapacity); // 初始化底层数组
     this.size = 0; // 当前元素数量
@@ -176,11 +176,11 @@ class MyArrayList {
   }
 }
 
-export default MyArrayList;
+export default ArrayList;
 
 function Test() {
   // 初始容量设置为 3
-  const arr = new MyArrayList(3);
+  const arr = new ArrayList(3);
 
   // 添加 5 个元素 1,2,3,4,5
   for (let i = 1; i <= 5; i++) {
@@ -197,4 +197,5 @@ function Test() {
     console.log(arr.get(i));
   }
 }
-Test();
+
+// Test();
