@@ -6,7 +6,7 @@ class CycleArray {
   constructor(capacity = 1) {
     this.capacity = capacity; // 最大容量
     this.count = 0; // 当前元素数量
-    // [start,end)
+    // [start, end) 左开右闭，表示当前存储的有效元素。数组中从右往左开始算，这里面的有效元素等于count
     this.start = 0; // 指向第一个有效元素的索引
     this.end = 0; // 指向最后一个有效元素的下一个位置索引（开区间）
     this.arr = new Array(capacity);
