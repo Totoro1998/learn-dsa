@@ -1,4 +1,4 @@
-import HashMap from "../7.哈希表/index.js";
+import HashMap from "../../7.哈希表/1.HashMap/index.js";
 
 class HashSet {
   constructor() {
