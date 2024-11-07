@@ -233,13 +233,37 @@ class BinaryTree {
     let queue = [root];
     // root 本身就是一层，depth 初始化为 1
     let depth = 1;
-    while (queue.length > 0) {
+    while (queue.length) {
       let sz = queue.length;
       // 遍历当前层的节点
       for (let i = 0; i < sz; i++) {
         let cur = queue.shift();
         // 判断是否到达叶子结点
         if (cur.left === null && cur.right === null) return depth;
+        // 将下一层节点加入队列
+        if (cur.left !== null) queue.push(cur.left);
+        if (cur.right !== null) queue.push(cur.right);
+      }
+      // 这里增加步数
+      depth++;
+    }
+    return depth;
+  }
+  /**
+   * 二叉树的最大深度
+   * @param {*} root
+   * @returns
+   */
+  maxDepth(root = this.root) {
+    if (root === null) return 0;
+    let queue = [root];
+    // root 本身就是一层，depth 初始化为 1
+    let depth = 1;
+    while (queue.length) {
+      let sz = queue.length;
+      // 遍历当前层的节点
+      for (let i = 0; i < sz; i++) {
+        let cur = queue.shift();
         // 将下一层节点加入队列
         if (cur.left !== null) queue.push(cur.left);
         if (cur.right !== null) queue.push(cur.right);
@@ -262,6 +286,7 @@ function Test() {
   //     console.log(node.value, weight);
   //   });
   console.log(tree.minDepth()); // 2
+  console.log(tree.maxDepth()); // 5
 }
 
 Test();
