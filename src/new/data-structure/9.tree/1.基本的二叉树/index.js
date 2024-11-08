@@ -277,6 +277,9 @@ class BinaryTree {
 
 function Test() {
   const tree = new BinaryTree().create_from_array([1, 2, 3, null, null, 5, 6, 7, 8]);
+
+  console.log(JSON.stringify(tree.root, null, 2));
+
   //   tree.postOrder();
   //   tree.levelOrderTraverse();
   //   tree.levelOrderTraverseWithDepth(undefined, (node, depth) => {
@@ -285,8 +288,8 @@ function Test() {
   //   tree.levelOrderTraverseWithWeight(undefined, (node, weight) => {
   //     console.log(node.value, weight);
   //   });
-  console.log(tree.minDepth()); // 2
-  console.log(tree.maxDepth()); // 5
+  // console.log(tree.minDepth()); // 2
+  // console.log(tree.maxDepth()); // 5
 }
 
 Test();
