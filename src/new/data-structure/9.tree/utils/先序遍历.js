@@ -15,13 +15,19 @@ function travPre_I1(x, visitor) {
 
 // 迭代版2
 function travPre_I2(x, visitor) {
+  // 从当前节点出发，沿左分支不断深入，直至没有左分支的节点；沿途节点遇到后立即访问
+  function visitAlongVine(x, visitor, stack) {
+    while (x) {
+      visitor(x); // 访问当前节点
+      if (x.rc) {
+        stack.push(x.rc); // 右孩子入栈暂存
+      }
+      x = x.lc; // 沿左分支深入一层
+    }
+  }
   const stack = [];
   while (true) {
-    while (x) {
-      visitor(x);
-      stack.push(x.rc);
-      x = x.lc;
-    }
+    visitAlongVine(x, visitor, stack); //从当前节点出发，逐批访问
     if (!stack.length) {
       break;
     }

@@ -173,17 +173,19 @@ export default BinTree;
 
 function Test() {
   const tree = BinTree.createFromArray([1, 2, 3, null, null, 5, 6, 7, 8]);
-  let find = undefined;
-  tree.travPost((node) => {
-    if (node.data === 2) {
-      find = node;
-      return true;
-    }
+  tree.travIn((node) => {
+    console.log(node.data);
   });
-  const attach = tree.secede(find);
-  //   tree.remove(find);
-  tree.attachRight(tree.root, attach);
-  console.log(tree.root);
+  // let find = undefined;
+  // tree.travPost((node) => {
+  //   if (node.data === 2) {
+  //     find = node;
+  //     return true;
+  //   }
+  // });
+  // const attach = tree.secede(find);
+  // tree.attachRight(tree.root, attach);
+  // console.log(tree.root);
 }
 
 Test();

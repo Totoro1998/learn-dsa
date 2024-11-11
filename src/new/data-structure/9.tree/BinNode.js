@@ -106,28 +106,28 @@ class BinNode {
    * @param {*} visitor
    */
   travPre(visitor) {
+    // travPre_R(this, visitor);
     // travPre_I1(this, visitor);
-    // travPre_I2(this, visitor);
-    travPre_R(this, visitor);
+    travPre_I2(this, visitor);
   }
   /**
    * 中序遍历
    * @param {*} visitor
    */
   travIn(visitor) {
-    // travIn_I1(this, visitor);
+    travIn_I1(this, visitor);
     // travIn_I2(this, visitor);
     // travIn_I3(this, visitor);
     // travIn_I4(this, visitor);
-    travIn_R(this, visitor);
+    // travIn_R(this, visitor);
   }
   /**
    * 后序遍历
    * @param {*} visitor
    */
   travPost(visitor) {
-    // travPost_I(this, visitor);
-    travPost_R(this, visitor);
+    travPost_I(this, visitor);
+    // travPost_R(this, visitor);
   }
 
   /**
