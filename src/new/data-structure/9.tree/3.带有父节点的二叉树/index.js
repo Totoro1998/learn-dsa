@@ -45,7 +45,7 @@ class BinTree {
     }
     this.size += subtree.size; // 更新当前树的规模
     x.updateHeightAbove(); // 更新节点 x 及其所有祖先的高度
-    BinTree.clearTree(subtree);
+    this.clearTree(subtree);
     return x; // 返回接入位置
   }
 
@@ -57,7 +57,7 @@ class BinTree {
     }
     this.size += subtree.size;
     x.updateHeightAbove();
-    BinTree.clearTree(subtree);
+    this.clearTree(subtree);
     return x;
   }
 
@@ -87,7 +87,7 @@ class BinTree {
   secede(x) {
     x.removeFromParent();
     x.parent.updateHeightAbove();
-    const s = new BinTree(x.len(), x);
+    const s = this.createSubtree(x.len(), x);
     x.parent = null;
     this.size -= s.size;
     return s;
@@ -120,7 +120,7 @@ class BinTree {
     if (this.root) this.root.travPost(visitor);
   }
 
-  static clearTree(subtree) {
+  clearTree(subtree) {
     const stack = [subtree.root];
     while (stack.length) {
       const node = stack.pop();
@@ -140,13 +140,11 @@ class BinTree {
    * @returns
    */
   // 静态方法，从数组创建树，更新每个节点的高度和树的大小
-  static createFromArray(arr) {
+  createFromArray(arr) {
     if (arr.length === 0) return null; // 如果数组为空，返回 null
-
-    const tree = new BinTree(); // 创建树的实例
     // 创建根节点
-    tree.insertRoot(arr[0]);
-    const queue = [tree.root]; // 用队列来按层次遍历
+    this.insertRoot(arr[0]);
+    const queue = [this.root]; // 用队列来按层次遍历
     let i = 1;
 
     // 层次遍历创建节点
@@ -154,38 +152,44 @@ class BinTree {
       const currentNode = queue.shift();
       // 插入左子节点
       if (arr[i] !== null) {
-        const lc = tree.insertLeft(arr[i], currentNode);
+        const lc = this.insertLeft(arr[i], currentNode);
         queue.push(lc);
       }
       i++;
       // 插入右子节点
       if (i < arr.length && arr[i] !== null) {
-        const rc = tree.insertRight(currentNode, arr[i]);
+        const rc = this.insertRight(currentNode, arr[i]);
         queue.push(rc); // 右子节点入队
       }
       i++;
     }
-    return tree; // 返回树实例
+    return this; // 返回树实例
+  }
+
+  // 定义一个用于创建子树的辅助方法，可以在子类中重写
+  createSubtree(size, node) {
+    return new BinTree(size, node); // 默认返回一个 BinTree 实例
   }
 }
 
 export default BinTree;
 
 function Test() {
-  const tree = BinTree.createFromArray([1, 2, 3, null, null, 5, 6, 7, 8]);
+  const tree = new BinTree();
+  tree.createFromArray([1, 2, 3, null, null, 5, 6, 7, 8]);
   tree.travIn((node) => {
     console.log(node.data);
   });
-  // let find = undefined;
-  // tree.travPost((node) => {
-  //   if (node.data === 2) {
-  //     find = node;
-  //     return true;
-  //   }
-  // });
-  // const attach = tree.secede(find);
-  // tree.attachRight(tree.root, attach);
-  // console.log(tree.root);
+  let find = undefined;
+  tree.travPost((node) => {
+    if (node.data === 2) {
+      find = node;
+      return true;
+    }
+  });
+  const attach = tree.secede(find);
+  tree.attachRight(tree.root, attach);
+  console.log(tree.root);
 }
 
-Test();
+// Test();
