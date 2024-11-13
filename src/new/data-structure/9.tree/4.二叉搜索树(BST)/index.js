@@ -1,4 +1,5 @@
 import BinTree from "../3.带有父节点的二叉树/index.js";
+import { fromParentTo } from "../BinNode.js";
 
 class BinarySearchTree extends BinTree {
   constructor() {
@@ -35,14 +36,13 @@ class BinarySearchTree extends BinTree {
     if (x) {
       return x;
     }
-
     if (!this.hot) {
-      this.insertRoot(e);
+      return this.insertRoot(e);
     } else {
       if (e < this.hot.data) {
-        this.insertLeft(e, this.hot);
+        return this.insertLeft(e, this.hot);
       } else {
-        this.insertRight(this.hot, e);
+        return this.insertRight(this.hot, e);
       }
     }
   }
@@ -54,7 +54,7 @@ class BinarySearchTree extends BinTree {
     if (!x) {
       return false;
     }
-    this.remove_at(x, this.hot);
+    this.remove_at(x);
     this.size--;
     this.hot.updateHeightAbove(); // 更新全树高度，以及历代祖先的高度
     return true;
@@ -68,13 +68,23 @@ class BinarySearchTree extends BinTree {
     let removedNode = x; // 实际被摘除的节点，初值同x
     let succ = null; // 实际被删除节点的接替者
     // 若x的左子树为空，则可直接将x替换为其右子树
+
+    let [parent, dir] = fromParentTo(x);
     if (!x.lc) {
-      x = x.rc;
-      succ = x;
+      if (dir) {
+        parent[dir] = x.rc;
+      } else {
+        this.root = x.rc;
+      }
+      succ = x.rc;
       // 若x的右子树为空，则可直接将x替换为其左子树
     } else if (!x.rc) {
-      x = x.lc;
-      succ = x;
+      if (dir) {
+        parent[dir] = x.lc;
+      } else {
+        this.root = x.lc;
+      }
+      succ = x.lc;
     } else {
       // 若左右子树均存在，则选择x的直接后继作为实际被摘除节点
       removedNode = x.succ(); // !removedNode一定是在x的右子树中
@@ -100,6 +110,8 @@ class BinarySearchTree extends BinTree {
     return new BinarySearchTree(size, node); // 默认返回一个 BinTree 实例
   }
 }
+
+export default BinarySearchTree;
 
 function Test() {
   const tree = new BinarySearchTree();

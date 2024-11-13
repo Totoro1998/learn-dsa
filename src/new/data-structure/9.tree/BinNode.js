@@ -147,18 +147,51 @@ class BinNode {
    * 及时更新节点的高度
    */
   updateHeight() {
-    const height = 1 + Math.max(this.stature(this.lc), this.stature(this.rc));
+    const height = 1 + Math.max(stature(this.lc), stature(this.rc));
     this.height = height;
     return this.height;
   }
-  /**
-   * 如果节点存在，返回其高度，否则返回 -1
-   * @param {*} p
-   * @returns
-   */
-  stature(p) {
-    return p ? p.height : -1;
+}
+/**
+ * 如果节点存在，返回其高度，否则返回 -1
+ * @param {*} p
+ * @returns
+ */
+function stature(p) {
+  return p ? p.height : -1;
+}
+/**
+ * 在左、右孩子中取更高者
+ * @param {*} x
+ * @returns
+ */
+function tallerChild(x) {
+  if (stature(x.lc) > stature(x.rc)) {
+    // 左子树高
+    return x.lc;
+  } else if (stature(x.lc) < stature(x.rc)) {
+    // 右子树高
+    return x.rc;
+  } else {
+    // 如果左右子树等高，根据 x 是否是父节点的左孩子来决定
+    return x.parent && x === x.parent.lc ? x.lc : x.rc;
   }
 }
 
-export { BinNode };
+/**
+ * 获取来自父节点的引用
+ * @param {*} x
+ */
+function fromParentTo(x) {
+  if (!x.parent) {
+    // 根节点
+    return [x, ""];
+  } else if (x === x.parent.lc) {
+    // 是父节点的左孩子
+    return [x.parent, "lc"];
+  } else {
+    return [x.parent, "rc"];
+  }
+}
+
+export { BinNode, stature, tallerChild, fromParentTo };
