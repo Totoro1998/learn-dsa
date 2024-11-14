@@ -151,6 +151,26 @@ class BinNode {
     this.height = height;
     return this.height;
   }
+  /**
+   * 接入左子树
+   * @param {*} lc
+   */
+  attachLc(lc) {
+    this.lc = lc;
+    if (lc) {
+      lc.parent = this;
+    }
+  }
+  /**
+   * 接入右子树
+   * @param {*} rc
+   */
+  attachRc(rc) {
+    this.rc = rc;
+    if (rc) {
+      rc.parent = this;
+    }
+  }
 }
 /**
  * 如果节点存在，返回其高度，否则返回 -1
