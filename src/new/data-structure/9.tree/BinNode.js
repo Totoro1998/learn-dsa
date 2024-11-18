@@ -2,16 +2,25 @@ import { travPre_I1, travPre_I2, travPre_R } from "./utils/先序遍历.js";
 import { travIn_I1, travIn_I2, travIn_I3, travIn_I4, travIn_R } from "./utils/中序遍历.js";
 import { travPost_I, travPost_R } from "./utils/后序遍历.js";
 
+const RB_RED = "red";
+const RB_BLACK = "black";
+
+const NODE_COLOR = {
+  RB_RED,
+  RB_BLACK,
+};
+
 /**
  * 节点类
  */
 class BinNode {
-  constructor(data = null, parent = null, lc = null, rc = null, height = 0) {
+  constructor(data = null, parent = null, lc = null, rc = null, height = 0, color = NODE_COLOR.RB_RED) {
     this.data = data; // 节点存储的值
     this.parent = parent; // 父节点
     this.lc = lc; // 左孩子节点
     this.rc = rc; // 右孩子节点
     this.height = height; // 任一节点v所对应子树subtree(v)的高度，亦称作该节点的高度，记作height(v)
+    this.color = color;
     if (this.lc) this.lc.parent = this; // 更新左孩子的父节点指向
     if (this.rc) this.rc.parent = this; // 更新右孩子的父节点指向
   }
@@ -42,6 +51,16 @@ class BinNode {
     let x = this;
     while (x) {
       x.updateHeight();
+      x = x.parent;
+    }
+  }
+  /**
+   * 红黑树更新节点及其历代祖先的高度
+   */
+  updateRBHeightAbove() {
+    let x = this;
+    while (x) {
+      x.updateRBHeight();
       x = x.parent;
     }
   }
@@ -152,6 +171,15 @@ class BinNode {
     return this.height;
   }
   /**
+   * 更新红黑树的节点的黑高度
+   */
+  updateRBHeight() {
+    const maxHeight = Math.max(stature(this.lc), stature(this.rc));
+    const height = isBlack(this) ? maxHeight + 1 : maxHeight;
+    this.height = height;
+    return this.height;
+  }
+  /**
    * 接入左子树
    * @param {*} lc
    */
@@ -214,4 +242,58 @@ function fromParentTo(x) {
   }
 }
 
-export { BinNode, stature, tallerChild, fromParentTo };
+/**
+ * 外部节点也视为黑节点
+ */
+function isBlack(p) {
+  return !p || NODE_COLOR.RB_BLACK === p.color;
+}
+function isRed(p) {
+  return !isBlack(p);
+}
+/**
+ * 兄弟
+ * @param {*} p
+ * @returns
+ */
+function sibling(p) {
+  return p === p.parent.lc ? p.parent.rc : p.parent.lc;
+}
+/**
+ * 叔叔
+ */
+function uncle(x) {
+  return sibling(x);
+}
+/**
+ * 判断是父节点的左孩子
+ * @param {*} x
+ * @returns
+ */
+function isLChild(x) {
+  return x.parent && x.parent.lc === x;
+}
+/**
+ * 判断是父节点的右孩子
+ * @param {*} x
+ * @returns
+ */
+function isRChild(x) {
+  return x.parent && x.parent.rc === x;
+}
+/**
+ * 这里的高度指的是节点的黑高度
+ * RedBlack高度更新条件
+ * 节点黑高度需要更新的情况共分三种
+ * 左、右孩子的黑高度不等
+ * 或者作为红节点，黑高度与其孩子不相等；
+ * 或者作为黑节点，黑高度不等于孩子的黑高度加一
+ */
+function BlackHeightUpdated(x) {
+  const lh = stature(x.lc);
+  const rh = stature(x.rc);
+  const eH = isRed(x) ? lh : lh + 1;
+  return lh === rh && x.height === eH;
+}
+
+export { BinNode, stature, tallerChild, fromParentTo, NODE_COLOR, isBlack, isRed, BlackHeightUpdated, uncle, sibling, isLChild, isRChild };

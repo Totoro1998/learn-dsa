@@ -60,7 +60,7 @@ class BinarySearchTree extends BinTree {
     return true;
   }
   /**
-   * BST节点删除算法：删除位置x所指的节点
+   * BST节点删除算法：删除位置x所指的节点，返回后继
    * @param {*} x
    * @param {*} hot
    */
