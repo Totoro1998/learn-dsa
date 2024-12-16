@@ -273,12 +273,40 @@ class BinaryTree {
     }
     return depth;
   }
+
+  /**
+   * 寻找所有从根节点到叶子节点的路径
+   * 先以1为根节点，然后以2，3为1的子节点为例。
+   * @param {*} root
+   * @returns
+   */
+  findAllPath(root = this.root) {
+    const res = [];
+    const path = [];
+
+    const traverse = (node) => {
+      if (node === null) return;
+      path.push(node.value);
+      if (!node.left && !node.right) {
+        res.push([...path]);
+      }
+      traverse(node.left);
+      traverse(node.right);
+      // 后续遍历，所有子树都遍历完了，需要返回上一层
+      path.pop();
+    };
+
+    traverse(root);
+
+    return res;
+  }
 }
 
 function Test() {
   const tree = new BinaryTree().create_from_array([1, 2, 3, null, null, 5, 6, 7, 8]);
-
-  console.log(JSON.stringify(tree.root, null, 2));
+  tree.findAllPath();
+  // console.log(tree.findAllPath());
+  // console.log(JSON.stringify(tree.root, null, 2));
 
   //   tree.postOrder();
   //   tree.levelOrderTraverse();

@@ -21,11 +21,7 @@ export default class RadixSort extends BaseSort {
       // 如果是数字数组，则将元素放入数字桶中进行排序，否则，将元素放入字符桶中进行排序
       const buckets = isArrayOfNumbers
         ? this.placeElementsInNumberBuckets(sortedArray, currentIndex)
-        : this.placeElementsInCharacterBuckets(
-            sortedArray,
-            currentIndex,
-            numPasses
-          );
+        : this.placeElementsInCharacterBuckets(sortedArray, currentIndex, numPasses);
 
       // 将桶中的元素合并成一个有序数组
 
@@ -81,11 +77,7 @@ export default class RadixSort extends BaseSort {
 
     array.forEach((element) => {
       // 根据元素在给定索引处的字符编码，计算桶的索引，放入相应桶中
-      const currentBucket = this.getCharCodeOfElementAtIndex(
-        element,
-        index,
-        numPasses
-      );
+      const currentBucket = this.getCharCodeOfElementAtIndex(element, index, numPasses);
       buckets[currentBucket].push(element);
     });
 

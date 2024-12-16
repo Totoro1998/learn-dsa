@@ -11,25 +11,19 @@ import { swap } from "../../../utils/array.js";
 export default class ShellSort extends BaseSort {
   sort(originArray) {
     const array = [...originArray];
-    const len = array.length;
-    let gap = Math.floor(len / 2); // 初始化步长为数组长度的一半
-
+    const length = array.length;
+    let gap = Math.floor(length / 2); // 初始化步长为数组长度的一半
     // 逐步缩小步长直到为1
     while (gap >= 1) {
-      for (let i = gap; i < len; i++) {
+      // 遍历数组，从gap开始，可以看作[0.gap)里的元素分别是各个子序列的第一个元素
+      for (let i = gap; i < length; i++) {
         // 对每个子序列进行插入排序
-        let currentIndex = i; // 记录当前元素的索引
-        // 如果排序的后面的数字小于前面的，交换两个数的位置
-        while (
-          this.comparator.lessThan(
-            array[currentIndex],
-            array[currentIndex - gap]
-          ) &&
-          currentIndex - gap >= 0
-        ) {
-          swap(array, currentIndex - gap, currentIndex);
-          // currentIndex减小gap从后向前遍历
-          currentIndex -= gap;
+        for (let j = i; j >= gap; j -= gap) {
+          if (this.comparator.lessThan(array[j], array[j - gap])) {
+            swap(array, j - gap, j);
+          } else {
+            break;
+          }
         }
       }
       gap = Math.floor(gap / 2); // 缩小步长

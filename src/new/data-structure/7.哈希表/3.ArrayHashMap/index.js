@@ -50,7 +50,7 @@ class ArrayHashMap {
     let node = this.arr[index];
 
     // 1. 最后一个元素 e 和第 index 个元素 node 换位置
-    let e = this.arr[this.arr.length - 1];
+    let e = this.arr.at(-1);
     this.arr[index] = e;
     this.arr[this.arr.length - 1] = node;
 
