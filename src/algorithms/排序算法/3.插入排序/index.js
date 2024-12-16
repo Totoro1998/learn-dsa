@@ -15,6 +15,7 @@ export default class InsertionSort extends BaseSort {
     while (sortedIndex < length) {
       // 将 nums[sortedIndex] 插入到有序数组 [0, sortedIndex) 中
       for (let i = sortedIndex; i > 0; i--) {
+        // 找到插入的位置
         if (this.comparator.lessThan(array[i], array[i - 1])) {
           swap(array, i, i - 1);
         } else {

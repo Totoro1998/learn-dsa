@@ -1,4 +1,4 @@
-import { swap } from "../../../../utils/array";
+import { swap } from "../../../utils/array.js";
 
 /**
  * 完全二叉堆，最大堆
@@ -183,19 +183,3 @@ function ProperParent(heap, n, i) {
 
   return i;
 }
-
-/**
- * 交换
- * @param {*} heap
- * @param {*} i
- * @param {*} j
- */
-
-// function Test() {
-//   const heap = [5, 1, 4, 6, 8, 2];
-//   const pq = new PQ_ComplHeap(heap);
-//   pq.heapSort();
-//   console.log(pq.heap);
-// }
-
-// Test();

@@ -30,12 +30,7 @@ export default class MergeSort extends BaseSort {
     // 左右两个数组分别从头开始比较
     while (leftIndex < leftLen && rightIndex < rightLen) {
       let minElement = null;
-      if (
-        this.comparator.lessThanOrEqual(
-          leftArray[leftIndex],
-          rightArray[rightIndex]
-        )
-      ) {
+      if (this.comparator.lessThanOrEqual(leftArray[leftIndex], rightArray[rightIndex])) {
         minElement = leftArray[leftIndex];
         leftIndex += 1;
       } else {
